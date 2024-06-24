@@ -1,2 +1,1 @@
-build/*
-data/*.bin
+server/data/*.bin

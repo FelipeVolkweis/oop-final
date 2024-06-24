@@ -1,8 +1,8 @@
 all:
-	javac src/*.java -d build
+	javac client/arquivos/src/com/gui/*.java -d client/arquivos/out/production/arquivos
 
-runjava: all
-	java -cp build Main
+run-client: all
+	java -cp client/arquivos/out/production/arquivos com.gui.Main
 
-runpython:
-	python src/server.py
+run-server:
+	python server/src/server.py
