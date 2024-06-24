@@ -4,7 +4,7 @@ Este é o README do projeto OOP Final. Aqui estão as instruções de compilaç�
 
 ## Pré-requisitos
 - Python 3.12.3
-- 
+- OpenJDK JDK 22.0.1
 
 ## Compilação
 
