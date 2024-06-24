@@ -6,6 +6,10 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
 
+/**
+ * Esta classe representa um diálogo de edição de jogador.
+ * É uma subclasse de JDialog e permite ao usuário editar as informações de um jogador.
+ */
 public class PlayerEditDialog extends JDialog {
     private static JTextField ageField;
     private static JTextField playerNameField;
@@ -23,6 +27,11 @@ public class PlayerEditDialog extends JDialog {
         getRootPane().setBorder(new EmptyBorder(0, 10, 10, 10));
     }
 
+    /**
+     * Configura a interface do usuário para editar um jogador.
+     * 
+     * @param player O jogador a ser editado.
+     */
     private void setupUI(Player player) {
         JPanel filterFields = new JPanel(new GridBagLayout());
         setPreferredSize(new Dimension(450, 450));
@@ -102,6 +111,13 @@ public class PlayerEditDialog extends JDialog {
         add(filterFields);
     }
 
+    /**
+     * Adiciona um DocumentListener ao JTextField fornecido.
+     * O DocumentListener é responsável por monitorar as alterações no documento do JTextField.
+     * Sempre que houver uma inserção, remoção ou alteração no documento, o método checkFields() será chamado.
+     *
+     * @param textField O JTextField ao qual o DocumentListener será adicionado.
+     */
     private void addDocumentListener(JTextField textField) {
         textField.getDocument().addDocumentListener(new DocumentListener() {
             public void insertUpdate(DocumentEvent e) {
@@ -118,10 +134,18 @@ public class PlayerEditDialog extends JDialog {
         });
     }
 
+    /**
+     * Verifica os campos e habilita o botão de salvar se houver alterações.
+     */
     private void checkFields() {
         saveButton.setEnabled(hasChanges());
     }
 
+    /**
+     * Verifica se houve alterações nos campos de edição do jogador.
+     * 
+     * @return true se houver alterações, caso contrário, false.
+     */
     private boolean hasChanges() {
         return !String.valueOf(originalPlayer.getAge()).equals(ageField.getText().trim()) ||
                 !originalPlayer.getPlayerName().equals(playerNameField.getText().trim()) ||

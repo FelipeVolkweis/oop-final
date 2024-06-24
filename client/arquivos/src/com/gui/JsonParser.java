@@ -3,7 +3,16 @@ package com.gui;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Classe responsável por realizar a análise e conversão de um JSON em um objeto ResponseDto.
+ */
 public class JsonParser {
+    /**
+     * Realiza a análise e conversão de um JSON em um objeto ResponseDto.
+     * 
+     * @param json O JSON a ser analisado e convertido.
+     * @return O objeto ResponseDto resultante da análise e conversão do JSON.
+     */
     public static ResponseDto parseResponse(String json) {
         int payloadStart = json.indexOf("\"payload\":[") + "\"payload\":[".length();
         int payloadEnd = json.indexOf("],\"status\"");
@@ -15,7 +24,12 @@ public class JsonParser {
 
         return new ResponseDto(playerList);
     }
-
+    /**
+     * Realiza a análise e conversão do payload do JSON em uma lista de objetos Player.
+     * 
+     * @param payload O payload do JSON a ser analisado e convertido.
+     * @return A lista de objetos Player resultante da análise e conversão do payload do JSON.
+     */
     private static List<Player> parsePayload(String payload) {
         String[] players = payload.split("},\\{");
 
@@ -45,17 +59,32 @@ public class JsonParser {
 
         return playerList;
     }
-
+    /**
+     * Verifica se uma string é nula e retorna uma string vazia caso seja.
+     * 
+     * @param str A string a ser verificada.
+     * @return A string vazia se a string de entrada for nula, caso contrário, retorna a própria string de entrada.
+     */
     private static String checkNullString(String str) {
         if (str.equals("\"null\"")) return "";
         return str;
     }
-
+    /**
+     * Verifica se um número é nulo e retorna 0 caso seja.
+     * 
+     * @param str O número a ser verificado.
+     * @return 0 se o número de entrada for nulo, caso contrário, retorna o próprio número de entrada.
+     */
     private static int checkNullNumber(String str) {
         if (str.equals("\"null\"")) return 0;
         return Integer.parseInt(str);
     }
-
+    /**
+     * Remove as aspas de uma string, se existirem.
+     * 
+     * @param str A string a ser modificada.
+     * @return A string sem as aspas, se existirem.
+     */
     private static String removeQuote(String str) {
         if (str != null && !str.isEmpty()) {
             if (str.startsWith("\"")) {

@@ -2,11 +2,29 @@ package com.gui;
 
 import javax.swing.*;
 
+/**
+ * A classe ResponseHandler é responsável por lidar com as respostas recebidas do servidor.
+ */
 public class ResponseHandler {
+    /**
+     * O código de status para uma resposta bem-sucedida.
+     */
     public static final int STATUS_OK = 200;
+    /**
+     * O código de status para uma resposta de recurso não encontrado.
+     */
     public static final int STATUS_NOT_FOUND = 404;
+    /**
+     * O código de status para uma resposta de erro interno do servidor.
+     */
     public static final int STATUS_INTERNAL_ERROR = 500;
 
+    /**
+     * Extrai o código de status de uma resposta.
+     *
+     * @param response A resposta recebida do servidor.
+     * @return O código de status extraído da resposta. Retorna -1 se o código de status não puder ser extraído.
+     */
     public static int extractStatus(String response) {
         try {
             int statusIndex = response.indexOf("\"status\":");
@@ -31,6 +49,11 @@ public class ResponseHandler {
         }
     }
 
+    /**
+     * Lida com a resposta recebida do servidor.
+     *
+     * @param response A resposta recebida do servidor.
+     */
     public static void handleResponse(String response) {
         int status = extractStatus(response);
         String errorMessage = extractMessage(response);
@@ -50,6 +73,12 @@ public class ResponseHandler {
         }
     }
 
+    /**
+     * Extrai a mensagem de uma resposta.
+     *
+     * @param response A resposta recebida do servidor.
+     * @return A mensagem extraída da resposta. Retorna uma mensagem de erro padrão se a mensagem não puder ser extraída.
+     */
     public static String extractMessage(String response) {
         try {
             int payloadIndex = response.indexOf("\"payload\":");

@@ -7,6 +7,10 @@ import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Representa uma tabela de jogadores.
+ * Esta classe é responsável por exibir os jogadores em uma tabela, permitindo a ordenação e edição dos dados.
+ */
 public class PlayerTable {
     private static JPanel tablePanel;
     private final JPanel gifPanel;
@@ -28,15 +32,31 @@ public class PlayerTable {
         tablePanel.add(gifPanel, BorderLayout.CENTER);
     }
 
+    /**
+     * Redimensiona uma imagem GIF para as dimensões desejadas.
+     * 
+     * @param icon O ImageIcon contendo a imagem GIF a ser redimensionada.
+     * @return Um novo ImageIcon com a imagem GIF redimensionada.
+     */
     private ImageIcon resizeGif(ImageIcon icon) {
         Image image = icon.getImage().getScaledInstance(300, 200, Image.SCALE_DEFAULT);
         return new ImageIcon(image);
     }
 
+    /**
+     * Retorna o painel que contém a tabela de jogadores.
+     * 
+     * @return o painel que contém a tabela de jogadores
+     */
     public static JPanel getTablePanel() {
         return tablePanel;
     }
 
+    /**
+     * Atualiza a tabela de jogadores com base na lista fornecida.
+     * 
+     * @param players A lista de jogadores a ser exibida na tabela.
+     */
     public static void updateTable(List<Player> players) {
         PlayerTableModel model = new PlayerTableModel(players);
         table = new JTable(model);
@@ -80,13 +100,30 @@ public class PlayerTable {
         tablePanel.repaint();
     }
 
+    /**
+     * Classe interna que implementa a interface TableCellRenderer para renderizar o cabeçalho de uma tabela com capacidade de ordenação.
+     */
     static class SortableHeaderRenderer implements TableCellRenderer {
         private final TableCellRenderer delegate;
 
+        /**
+         * Construtor da classe SortableHeaderRenderer.
+         * @param delegate O TableCellRenderer delegado para renderizar o cabeçalho da tabela.
+         */
         public SortableHeaderRenderer(TableCellRenderer delegate) {
             this.delegate = delegate;
         }
 
+        /**
+         * Método que retorna o componente de renderização para o cabeçalho da tabela.
+         * @param table A tabela em que o cabeçalho está sendo renderizado.
+         * @param value O valor do cabeçalho.
+         * @param isSelected Indica se o cabeçalho está selecionado.
+         * @param hasFocus Indica se o cabeçalho tem o foco.
+         * @param row O número da linha do cabeçalho.
+         * @param column O número da coluna do cabeçalho.
+         * @return O componente de renderização para o cabeçalho da tabela.
+         */
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
             Component c = delegate.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
@@ -117,6 +154,11 @@ public class PlayerTable {
             return c;
         }
 
+        /**
+         * Método privado que retorna o ícone correspondente à ordem de classificação especificada.
+         * @param sortOrder A ordem de classificação.
+         * @return O ícone correspondente à ordem de classificação.
+         */
         private Icon getIconForSortOrder(SortOrder sortOrder) {
             String iconKey = sortOrder == SortOrder.ASCENDING ? "Table.descendingSortIcon" : "Table.ascendingSortIcon";
             Icon icon = UIManager.getIcon(iconKey);
@@ -131,6 +173,9 @@ public class PlayerTable {
         }
     }
 
+    /**
+     * Exibe os GIFs na tabela.
+     */
     public void showGifs() {
         tablePanel.removeAll();
         tablePanel.add(gifPanel, BorderLayout.CENTER);
@@ -138,21 +183,46 @@ public class PlayerTable {
         tablePanel.repaint();
     }
 
+    /**
+     * Carrega um ícone a partir de um caminho específico.
+     * 
+     * @param path O caminho do ícone a ser carregado.
+     * @return O ícone carregado.
+     */
     private static ImageIcon loadIcon(String path) {
         ImageIcon icon = new ImageIcon(Objects.requireNonNull(PlayerTable.class.getResource(path)));
         Image image = icon.getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH);
         return new ImageIcon(image);
     }
 
+    /**
+     * Classe interna estática que representa um renderizador de células de tabela com ícone.
+     * Estende a classe DefaultTableCellRenderer.
+     */
     static class IconRenderer extends DefaultTableCellRenderer {
         private final ImageIcon icon;
 
+        /**
+         * Construtor da classe IconRenderer.
+         * @param icon O ícone a ser exibido nas células da tabela.
+         */
         public IconRenderer(ImageIcon icon) {
             this.icon = icon;
             setHorizontalAlignment(SwingConstants.CENTER);
             setVerticalAlignment(SwingConstants.CENTER);
         }
 
+        /**
+         * Sobrescreve o método getTableCellRendererComponent da classe pai.
+         * Configura o ícone e remove o texto da célula.
+         * @param table A tabela em que a célula está sendo renderizada.
+         * @param value O valor da célula.
+         * @param isSelected Indica se a célula está selecionada.
+         * @param hasFocus Indica se a célula possui foco.
+         * @param row O índice da linha da célula.
+         * @param column O índice da coluna da célula.
+         * @return A própria instância do renderizador.
+         */
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
             super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
@@ -162,11 +232,21 @@ public class PlayerTable {
         }
     }
 
+    /**
+     * Classe interna que implementa a interface TableCellEditor e serve como editor de células para a tabela de jogadores.
+     * Esta classe é responsável por exibir um botão com um ícone em cada célula da tabela, permitindo a edição ou exclusão de um jogador.
+     */
     static class IconEditor extends AbstractCellEditor implements TableCellEditor {
         private final JButton button = new JButton();
         private String currentValue;
         private final ImageIcon icon;
 
+        /**
+         * Construtor da classe IconEditor.
+         * 
+         * @param icon  O ícone a ser exibido no botão.
+         * @param table A tabela de jogadores.
+         */
         public IconEditor(ImageIcon icon, JTable table) {
             this.icon = icon;
             button.addActionListener(e -> {
@@ -195,11 +275,26 @@ public class PlayerTable {
             });
         }
 
+        /**
+         * Retorna o valor atual do editor de célula.
+         * 
+         * @return O valor atual do editor de célula.
+         */
         @Override
         public Object getCellEditorValue() {
             return currentValue;
         }
 
+        /**
+         * Retorna o componente que será usado como editor de célula para a célula especificada.
+         * 
+         * @param table      A tabela de jogadores.
+         * @param value      O valor da célula.
+         * @param isSelected Indica se a célula está selecionada.
+         * @param row        O índice da linha da célula.
+         * @param column     O índice da coluna da célula.
+         * @return O componente que será usado como editor de célula.
+         */
         @Override
         public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
             currentValue = (String) value;

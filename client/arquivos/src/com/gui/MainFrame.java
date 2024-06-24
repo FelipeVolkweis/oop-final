@@ -13,6 +13,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Classe que representa a janela principal da aplicação.
+ * Esta classe estende a classe JFrame e contém os componentes principais da interface gráfica.
+ */
 public class MainFrame extends JFrame {
     public static String defaultIp = "127.0.0.1";
     public static int defaultPort = 8080;
@@ -59,26 +63,54 @@ public class MainFrame extends JFrame {
         initializeMenu();
     }
 
+    /**
+     * Atualiza o arquivo selecionado e atualiza a exibição na barra lateral esquerda.
+     * 
+     * @param fileName O nome do arquivo selecionado.
+     */
     public static void handleSelectFile(String fileName) {
         selectFile = fileName;
         LeftBar.updateSelectFile(fileName);
     }
 
+    /**
+     * Inicia uma conexão de socket com o servidor.
+     * 
+     * @param selectedFile O arquivo selecionado para ser enviado ao servidor.
+     * @param ipNumber O número de IP do servidor.
+     * @param portNumber O número da porta do servidor.
+     */
     public static void startSocketConnection(String selectedFile, String ipNumber, int portNumber) {
         socketConnection = new SocketConnection(ipNumber, portNumber);
         socketConnection.connect(selectedFile);
     }
 
+    /**
+     * Desconecta a conexão do socket, se estiver conectado.
+     */
     public static void disconnectSocketConnection() {
         if (socketConnection != null && socketConnection.isConnected()) {
             socketConnection.disconnect();
         }
     }
 
+    /**
+     * Verifica se a conexão está ativa.
+     * 
+     * @return true se a conexão estiver ativa, caso contrário, retorna false.
+     */
     public static boolean isConnectionActive() {
         return socketConnection != null && socketConnection.isConnected();
     }
 
+    /**
+     * Manipula a resposta do socket.
+     * 
+     * @param response A resposta do socket.
+     * @param onSuccess A ação a ser executada em caso de sucesso.
+     * @param onNotFound A ação a ser executada caso o recurso não seja encontrado.
+     * @param onError A ação a ser executada em caso de erro.
+     */
     public static void handleSocketResponse(String response, Runnable onSuccess, Runnable onNotFound, Runnable onError) {
         int status = ResponseHandler.extractStatus(response);
 
@@ -99,6 +131,11 @@ public class MainFrame extends JFrame {
         }
     }
 
+    /**
+     * Cria um arquivo binário a partir de um arquivo CSV.
+     * 
+     * @param fileName o nome do arquivo CSV
+     */
     public static void createBinaryFile(String fileName) {
         socketConnection.sendMessage(
                 String.format("1 %s.csv %s.bin", fileName, fileName),
@@ -118,6 +155,12 @@ public class MainFrame extends JFrame {
         );
     }
 
+    /**
+     * Deleta um jogador pelo seu ID.
+     * 
+     * @param playerId o ID do jogador a ser deletado
+     * @param callback uma função a ser executada após a operação de deleção
+     */
     public static void deletePlayer(int playerId, Runnable callback) {
         socketConnection.sendMessage(
                 String.format("5 %s.bin %sIndice.bin 1\n1 id %s", selectFile, selectFile, playerId),
@@ -137,6 +180,12 @@ public class MainFrame extends JFrame {
         );
     }
 
+    /**
+     * Atualiza um jogador na tabela e no servidor.
+     * 
+     * @param playerToUpdate O jogador a ser atualizado.
+     * @param table A tabela onde o jogador está sendo exibido.
+     */
     public static void updatePlayer(Player playerToUpdate, JTable table) {
         deletePlayer(playerToUpdate.getId(), () -> {
             String updateCommand = getString(playerToUpdate);
@@ -160,6 +209,12 @@ public class MainFrame extends JFrame {
         });
     }
 
+    /**
+     * Retorna uma string formatada contendo os dados do jogador a ser atualizado.
+     * 
+     * @param playerToUpdate O jogador a ser atualizado.
+     * @return Uma string formatada contendo os dados do jogador.
+     */
     private static String getString(Player playerToUpdate) {
         String ageStr = (playerToUpdate.getAge() == -1) ? "-1" : String.valueOf(playerToUpdate.getAge());
         String playerNameStr = (playerToUpdate.getPlayerName().equals("NULO")) ? "NULO" : "\"" + playerToUpdate.getPlayerName() + "\"";
@@ -177,6 +232,11 @@ public class MainFrame extends JFrame {
         );
     }
 
+    /**
+     * Obtém todos os jogadores a partir de um arquivo.
+     * 
+     * @param fileName O nome do arquivo.
+     */
     public static void getAllPlayers(String fileName) {
         socketConnection.sendMessage(
                 String.format("2 %s.bin", fileName),
@@ -202,6 +262,14 @@ public class MainFrame extends JFrame {
         );
     }
 
+    /**
+     * Seleciona os jogadores.
+     * 
+     * Envia uma mensagem de seleção de arquivo para o servidor através da conexão de socket.
+     * Em caso de sucesso, atualiza a tabela de jogadores com a lista de jogadores recebida na resposta.
+     * Caso nenhum jogador seja encontrado, atualiza a tabela com uma lista vazia e exibe uma mensagem informativa.
+     * Em caso de falha, exibe uma mensagem de erro com a descrição do erro.
+     */
     public static void selectPlayers() {
         socketConnection.sendMessage(
                 LeftBar.buildQuery(selectFile),
@@ -227,6 +295,12 @@ public class MainFrame extends JFrame {
         );
     }
 
+    /**
+     * Desativa os componentes relacionados à conexão.
+     * 
+     * Esta função desativa os componentes da barra de navegação e da barra lateral,
+     * além de chamar a função handleSelectFile passando null como parâmetro.
+     */
     public static void disableComponentsWithConnection() {
         NavBar.setComponentsEnabled(true);
         NavBar.setDisconnectButtonEnabled(false);
@@ -234,17 +308,30 @@ public class MainFrame extends JFrame {
         MainFrame.handleSelectFile(null);
     }
 
+    /**
+     * Habilita os componentes da interface gráfica quando há uma conexão estabelecida.
+     */
     public static void enableComponentsWithConnection() {
         NavBar.setComponentsEnabled(false);
         NavBar.setDisconnectButtonEnabled(true);
     }
 
+    /**
+     * Habilita os componentes relacionados à criação de arquivo.
+     * 
+     * @param selectFile O arquivo selecionado.
+     */
     public static void enableComponentsWithFileCreation(String selectFile) {
         LeftBar.setComponentsEnabled(true);
         LeftBar.updateButtonState();
         MainFrame.handleSelectFile(selectFile);
     }
 
+    /**
+     * Reproduz um arquivo de áudio em uma nova thread.
+     * 
+     * @param audioPatch O caminho do arquivo de áudio a ser reproduzido.
+     */
     static void playAudio(String audioPatch) {
         new Thread(() -> {
             try {
@@ -259,11 +346,19 @@ public class MainFrame extends JFrame {
         }).start();
     }
 
+    /**
+     * Abre uma caixa de diálogo para editar as informações de um jogador.
+     * 
+     * @param player O jogador a ser editado.
+     */
     public static void onEditButtonClicked(Player player) {
         PlayerEditDialog dialog = new PlayerEditDialog(instance, player);
         dialog.setVisible(true);
     }
 
+    /**
+     * Inicializa o menu da janela principal.
+     */
     private void initializeMenu() {
         // ---- menu ----
         JMenuBar menuBar = new JMenuBar();
@@ -280,6 +375,12 @@ public class MainFrame extends JFrame {
 
     // ---- menu ----
 
+    /**
+     * Exibe a janela de lista de jogadores.
+     * Verifica se a conexão do socket está ativa e se um arquivo foi carregado antes de exibir a janela.
+     * Caso contrário, exibe uma mensagem de aviso.
+     * Chama o método getAllPlayersForTextDisplay() para obter todos os jogadores para exibição em texto.
+     */
     private void showPlayersListWindow(ActionEvent e) {
         if (socketConnection == null || !socketConnection.isConnected() || selectFile == null) {
             JOptionPane.showMessageDialog(this, "Primeiro, certifique-se de que um arquivo foi carregado e que a conexão está ativa.", "Aviso", JOptionPane.WARNING_MESSAGE);
@@ -288,6 +389,11 @@ public class MainFrame extends JFrame {
         getAllPlayersForTextDisplay();
     }
 
+    /**
+     * Obtém todos os jogadores para exibição em formato de texto.
+     * 
+     * @param selectFile O arquivo selecionado.
+     */
     public static void getAllPlayersForTextDisplay() {
         socketConnection.sendMessage(
                 String.format("2 %s.bin", selectFile),
@@ -308,6 +414,11 @@ public class MainFrame extends JFrame {
         );
     }
 
+    /**
+     * Exibe os jogadores em uma janela de texto.
+     * 
+     * @param players a lista de jogadores a ser exibida
+     */
     private static void displayPlayersInTextWindow(List<Player> players) {
         JTextArea textArea = getjTextArea(players);
 
@@ -320,6 +431,12 @@ public class MainFrame extends JFrame {
         dialog.setVisible(true);
     }
 
+    /**
+     * Retorna uma instância de JTextArea preenchida com os dados dos jogadores.
+     * 
+     * @param players a lista de jogadores
+     * @return uma instância de JTextArea preenchida com os dados dos jogadores
+     */
     private static JTextArea getjTextArea(List<Player> players) {
         JTextArea textArea = new JTextArea(20, 40);
         textArea.setEditable(false);

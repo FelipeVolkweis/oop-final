@@ -8,6 +8,10 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
 
+/**
+ * Esta classe representa a barra lateral esquerda da interface gráfica.
+ * Ela estende a classe JPanel e contém componentes para filtrar e pesquisar jogadores.
+ */
 public class LeftBar extends JPanel {
     private static JLabel fileStatusLabel;
     private static JButton searchButton;
@@ -102,6 +106,11 @@ public class LeftBar extends JPanel {
         setComponentsEnabled(false);
     }
 
+    /**
+     * Habilita ou desabilita os componentes da barra lateral esquerda.
+     * 
+     * @param enabled true para habilitar os componentes, false para desabilitar
+     */
     public static void setComponentsEnabled(boolean enabled) {
         loadAllButton.setEnabled(enabled);
         idField.setEnabled(enabled);
@@ -113,12 +122,22 @@ public class LeftBar extends JPanel {
         searchButton.setEnabled(enabled);
     }
 
+    /**
+     * Atualiza o nome do arquivo selecionado na barra lateral.
+     * 
+     * @param selectFileName O nome do arquivo selecionado. Pode ser nulo.
+     */
     public static void updateSelectFile(String selectFileName) {
         fileStatusLabel.setText(
                 selectFileName != null ? selectFileName : "Nenhum arquivo foi carregado"
         );
     }
 
+    /**
+     * Verifica se os campos possuem conteúdo.
+     * 
+     * @return true se pelo menos um dos campos tiver conteúdo, caso contrário, retorna false.
+     */
     public static boolean checkFieldsForContent() {
         return !idField.getText().trim().isEmpty() ||
                 !ageField.getText().trim().isEmpty() ||
@@ -127,11 +146,22 @@ public class LeftBar extends JPanel {
                 !clubNameField.getText().trim().isEmpty();
     }
 
+    /**
+     * Atualiza o estado dos botões.
+     * 
+     * Verifica o conteúdo dos campos e habilita ou desabilita os botões de acordo com o resultado.
+     */
     public static void updateButtonState() {
         searchButton.setEnabled(checkFieldsForContent());
         cleanButton.setEnabled(checkFieldsForContent());
     }
 
+    /**
+     * Configura os ouvintes de campo.
+     * 
+     * Adiciona um DocumentListener aos campos de ID, idade, nome do jogador, nacionalidade e nome do clube.
+     * O DocumentListener é responsável por atualizar o estado do botão.
+     */
     private void setupFieldListeners() {
         DocumentListener documentListener = new DocumentListener() {
             public void insertUpdate(DocumentEvent e) {
@@ -154,6 +184,9 @@ public class LeftBar extends JPanel {
         clubNameField.getDocument().addDocumentListener(documentListener);
     }
 
+    /**
+     * Limpa os campos de entrada de dados.
+     */
     private void clearFields() {
         idField.setText("");
         ageField.setText("");
@@ -163,6 +196,12 @@ public class LeftBar extends JPanel {
         updateButtonState();
     }
 
+    /**
+     * Constrói uma consulta para um arquivo específico.
+     * 
+     * @param fileName O nome do arquivo.
+     * @return A consulta construída.
+     */
     static String buildQuery(String fileName) {
         StringBuilder queryBuilder = new StringBuilder(String.format("3 %s.bin 1\n", fileName));
         int fieldCount = 0;

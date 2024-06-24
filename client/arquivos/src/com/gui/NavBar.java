@@ -8,6 +8,11 @@ import java.awt.*;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Classe que representa a barra de navegação da aplicação.
+ * A barra de navegação contém campos de entrada para o endereço IP e porta do servidor,
+ * botões para carregar arquivos e desconectar do servidor, e uma seção de imagens de jogadores.
+ */
 public class NavBar extends JPanel {
     private static JTextField ipField;
     private static JTextField portField;
@@ -86,16 +91,34 @@ public class NavBar extends JPanel {
         setDisconnectButtonEnabled(false);
     }
 
+    /**
+     * Habilita ou desabilita os componentes de servidor.
+     * 
+     * @param enabled true para habilitar os componentes, false para desabilitar
+     */
     public static void setComponentsEnabled(boolean enabled) {
         ipField.setEnabled(enabled);
         portField.setEnabled(enabled);
     }
 
+    /**
+     * Define se o botão de desconexão está habilitado ou desabilitado.
+     * 
+     * @param enabled true para habilitar o botão, false para desabilitar o botão
+     */
     public static void setDisconnectButtonEnabled(boolean enabled) {
         disconnectButton.setEnabled(enabled);
     }
 
+    /**
+     * Classe interna estática que representa um painel de imagem do jogador.
+     * Este painel contém botões de imagem para cada jogador, que reproduzem um áudio específico quando clicados.
+     */
     private static class PlayerImagePanel extends JPanel {
+        /**
+         * Construtor da classe PlayerImagePanel.
+         * Configura o layout do painel e cria os botões de imagem para cada jogador.
+         */
         public PlayerImagePanel() {
             setLayout(new FlowLayout(FlowLayout.CENTER, 10, 0));
 
@@ -115,6 +138,13 @@ public class NavBar extends JPanel {
             add(player3Label);
         }
 
+        /**
+         * Cria um botão de imagem com o ícone fornecido e o caminho do áudio.
+         * O botão é configurado para reproduzir o áudio quando clicado.
+         * @param icon O ícone do botão de imagem.
+         * @param musicPath O caminho do arquivo de áudio.
+         * @return O botão de imagem criado.
+         */
         private JButton createImageButton(ImageIcon icon, String musicPath) {
             JButton button = new JButton(icon);
             button.addActionListener(e -> MainFrame.playAudio(musicPath));
@@ -125,6 +155,13 @@ public class NavBar extends JPanel {
             return button;
         }
 
+        /**
+         * Redimensiona o ícone da imagem para a largura e altura fornecidas.
+         * @param path O caminho da imagem.
+         * @param width A largura desejada.
+         * @param height A altura desejada.
+         * @return O ícone da imagem redimensionado.
+         */
         private ImageIcon resizeImageIcon(String path, int width, int height) {
             ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource(path)));
             Image image = icon.getImage();

@@ -7,3 +7,6 @@ run-client: all
 
 run-server:
 	python server/src/server.py
+
+clean:
+	rm -rf client/arquivos/out/
