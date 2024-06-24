@@ -2,13 +2,32 @@
 
 Este é o README do projeto OOP Final. Aqui estão as instruções de compilação e execução do projeto.
 
+## Pré-requisitos
+- Python 3.12.3
+- 
+
 ## Compilação
 
 Para compilar o projeto sem o uso do comando make, siga as seguintes etapas:
 
+Em linux:
 1. Compile os arquivos Java do cliente:
 ```
 javac client/arquivos/src/com/gui/*.java -d client/arquivos/out/production/arquivos
+```
+2. Copie os recursos para a pasta de build:
+```
+cp client/arquivos/src/com/gui/resources -r client/arquivos/out/production/arquivos/com/gui/resources
+```
+
+Em Windows:
+1. Compile os arquivos Java do cliente:
+```
+javac client/arquivos/src/com/gui/*.java -d client/arquivos/out/production/arquivos
+```
+2. Copie os recursos para a pasta de build:
+```
+robocopy client/arquivos/src/com/gui/resources client/arquivos/out/production/arquivos/com/gui/resources \E
 ```
 
 ## Execução
