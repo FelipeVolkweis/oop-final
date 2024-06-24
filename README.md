@@ -8,6 +8,12 @@ Este é o README do projeto OOP Final. Aqui estão as instruções de compilaç�
 
 ## Compilação
 
+Para compilar o projeto utilizando Linux e fazendo uso do comando make:
+1. 
+```
+make all
+```
+
 Para compilar o projeto sem o uso do comando make, siga as seguintes etapas:
 
 Em linux:
@@ -31,6 +37,18 @@ robocopy client/arquivos/src/com/gui/resources client/arquivos/out/production/ar
 ```
 
 ## Execução
+
+Para executar o projeto utilizando Linux e fazendo uso do comando make:
+1. Para iniciar o servidor digite:
+```
+make run-server
+```
+2. Para iniciar a GUI digite:
+```
+make run-client
+```
+
+Caso esteja no Windows ou não queira usar make no Linux:
 
 Para executar o cliente, utilize o seguinte comando:
 ```
