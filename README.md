@@ -33,7 +33,7 @@ javac client/arquivos/src/com/gui/*.java -d client/arquivos/out/production/arqui
 ```
 2. Copie os recursos para a pasta de build:
 ```
-robocopy client/arquivos/src/com/gui/resources client/arquivos/out/production/arquivos/com/gui/resources \E
+robocopy client/arquivos/src/com/gui/resources client/arquivos/out/production/arquivos/com/gui/resources 
 ```
 
 ## Execução
