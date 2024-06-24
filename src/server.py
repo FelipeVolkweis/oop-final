@@ -2,6 +2,7 @@ import socket
 import subprocess
 import os
 import struct
+import sys
 
 def start_server(host='127.0.0.1', port=8080):
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -24,7 +25,10 @@ def start_server(host='127.0.0.1', port=8080):
 
 def handle_client(conn, addr):
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    exec_path = os.path.normpath(os.path.abspath(os.path.join(current_dir, '..', 'lib', 'exec')))
+
+    executable = sys.platform == 'win32' and 'win.exe' or 'linux'
+
+    exec_path = os.path.normpath(os.path.abspath(os.path.join(current_dir, '..', 'lib', executable)))
     data_dir = os.path.normpath(os.path.abspath(os.path.join(current_dir, '..', 'data')))
 
     with conn:
