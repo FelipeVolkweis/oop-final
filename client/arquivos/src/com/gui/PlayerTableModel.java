@@ -5,6 +5,8 @@ import java.util.List;
 
 /**
  * Classe que representa o modelo de tabela para exibição dos jogadores.
+ * Esta classe estende DefaultTableModel, permitindo personalizar o comportamento da tabela,
+ * como a definição de colunas editáveis e a manipulação dos dados dos jogadores.
  */
 public class PlayerTableModel extends DefaultTableModel {
     private static final String[] columnNames = {"ID", "Idade", "Nome do Jogador", "Nacionalidade", "Nome do Clube", "Editar", "Excluir"};
@@ -16,8 +18,9 @@ public class PlayerTableModel extends DefaultTableModel {
      * @param players A lista de jogadores a ser exibida na tabela.
      */
     public PlayerTableModel(List<Player> players) {
-        super(columnNames, 0);
-        this.players = players;
+        super(columnNames, 0); // Inicializa o modelo de tabela com os nomes das colunas.
+        this.players = players; // Armazena a lista de jogadores.
+        // Adiciona cada jogador como uma linha na tabela.
         for (Player player : players) {
             Object[] row = {
                     player.id(),
@@ -40,8 +43,8 @@ public class PlayerTableModel extends DefaultTableModel {
     public void removePlayerById(int playerId) {
         for (int i = 0; i < players.size(); i++) {
             if (players.get(i).getId() == playerId) {
-                players.remove(i);
-                removeRow(i);
+                players.remove(i); // Remove o jogador da lista.
+                removeRow(i);  // Remove a linha correspondente na tabela.
                 break;
             }
         }
@@ -63,13 +66,13 @@ public class PlayerTableModel extends DefaultTableModel {
                         updatedPlayer.getNationality().equals("NULO") ? "" : updatedPlayer.getNationality(),
                         updatedPlayer.getClubName().equals("NULO") ? "" : updatedPlayer.getClubName()
                 );
-                players.set(i, playerToUpdate);
+                players.set(i, playerToUpdate); // Atualiza o jogador na lista.
                 updated = true;
                 break;
             }
         }
         if (updated) {
-            PlayerTable.updateTable(players);
+            PlayerTable.updateTable(players); // Atualiza a visualização da tabela.
         }
     }
 

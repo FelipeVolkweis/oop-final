@@ -6,6 +6,7 @@ run-client: all
 	java -cp client/arquivos/out/production/arquivos com.gui.Main
 
 run-server:
+	chmod 777 server/lib/linux
 	python server/src/server.py
 
 clean:

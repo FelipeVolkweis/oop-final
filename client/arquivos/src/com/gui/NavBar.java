@@ -19,10 +19,18 @@ public class NavBar extends JPanel {
     private static JButton disconnectButton;
     private static JButton loadButton;
 
+
+    /**
+     * Construtor da classe NavBar.
+     * Inicializa os componentes da barra de navegação.
+     *
+     * @param fifaYears Lista de anos FIFA disponíveis para seleção.
+     */
     public NavBar(List<String> fifaYears) {
-        setLayout(new GridBagLayout());
+        setLayout(new GridBagLayout()); // Define o layout da barra de navegação
         GridBagConstraints gbc = new GridBagConstraints();
 
+        // Configura as bordas do painel
         Border bottomLine = BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK);
         Border padding = new EmptyBorder(10, 10, 10, 10);
         setBorder(new CompoundBorder(bottomLine, padding));
@@ -34,16 +42,18 @@ public class NavBar extends JPanel {
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.fill = GridBagConstraints.NONE;
 
+        // Divisão 1: Dropdown e botão de carregar arquivo
         JPanel div1 = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
         JComboBox<String> dropdown = new JComboBox<>(fifaYears.toArray(new String[0]));
         loadButton = new JButton("Carregar arquivo");
         div1.add(dropdown);
         div1.add(loadButton);
-        add(div1, gbc);
+        add(div1, gbc);  // Adiciona a divisão 1 à barra de navegação
 
         gbc.gridx++;
         JPanel div2 = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
 
+        // Cria campos de entrada para IP e porta utilizando GUIUtils
         GUIUtils.FieldPanel ipFieldPanel = GUIUtils.inputField("IP:", 120, 15, false, 'x', MainFrame.defaultIp);
         ipField = ipFieldPanel.textField;
         div2.add(ipFieldPanel.panel);
@@ -52,15 +62,17 @@ public class NavBar extends JPanel {
         portField = portFieldPanel.textField;
         div2.add(portFieldPanel.panel);
 
+        // Botão de desconectar
         disconnectButton = new JButton("Desconectar");
         div2.add(disconnectButton);
 
-        add(div2, gbc);
+        add(div2, gbc); // Adiciona a divisão 2 à barra de navegação
 
         gbc.gridx++;
-        PlayerImagePanel imagePanel = new PlayerImagePanel();
-        add(imagePanel, gbc);
+        PlayerImagePanel imagePanel = new PlayerImagePanel(); // Cria o painel de imagens dos jogadores
+        add(imagePanel, gbc); // Adiciona o painel de imagens à barra de navegação
 
+        // Adiciona listeners aos botões
         loadButton.addActionListener(e -> {
             MainFrame.playAudio("./resources/ronaldo.wav");
             MainFrame.playerTable.showGifs();
@@ -88,7 +100,7 @@ public class NavBar extends JPanel {
             loadButton.setEnabled(true);
         });
 
-        setDisconnectButtonEnabled(false);
+        setDisconnectButtonEnabled(false); // Desabilita o botão de desconectar inicialmente
     }
 
     /**
@@ -120,19 +132,21 @@ public class NavBar extends JPanel {
          * Configura o layout do painel e cria os botões de imagem para cada jogador.
          */
         public PlayerImagePanel() {
-            setLayout(new FlowLayout(FlowLayout.CENTER, 10, 0));
+            setLayout(new FlowLayout(FlowLayout.CENTER, 10, 0)); // Define o layout do painel
 
             int imageWidth = 50;
             int imageHeight = 50;
-
+            // Carrega e redimensiona as imagens dos jogadores
             ImageIcon player1Icon = resizeImageIcon("./resources/player1.png", imageWidth, imageHeight);
             ImageIcon player2Icon = resizeImageIcon("./resources/player2.png", imageWidth, imageHeight);
             ImageIcon player3Icon = resizeImageIcon("./resources/player3.png", imageWidth, imageHeight);
 
+            // Cria os botões de imagem para cada jogador
             JButton player1Label = createImageButton(player1Icon, "./resources/cr7.wav");
             JButton player2Label = createImageButton(player2Icon, "./resources/messi.wav");
             JButton player3Label = createImageButton(player3Icon, "./resources/neymar.wav");
 
+            // Adiciona o botão de imagem do jogador ao painel
             add(player1Label);
             add(player2Label);
             add(player3Label);
@@ -147,7 +161,7 @@ public class NavBar extends JPanel {
          */
         private JButton createImageButton(ImageIcon icon, String musicPath) {
             JButton button = new JButton(icon);
-            button.addActionListener(e -> MainFrame.playAudio(musicPath));
+            button.addActionListener(e -> MainFrame.playAudio(musicPath)); // Adiciona um listener para reproduzir o áudio quando o botão é clicado
             button.setBorder(null);
             button.setContentAreaFilled(false);
             button.setFocusPainted(false);

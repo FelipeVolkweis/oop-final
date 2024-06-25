@@ -12,17 +12,21 @@ import java.util.Objects;
  * Esta classe é responsável por exibir os jogadores em uma tabela, permitindo a ordenação e edição dos dados.
  */
 public class PlayerTable {
-    private static JPanel tablePanel;
-    private final JPanel gifPanel;
-    public static JTable table;
+    private static JPanel tablePanel; // Painel que contém a tabela e os GIFs
+    private final JPanel gifPanel; // Painel específico para mostrar GIFs
+    public static JTable table; // A tabela que exibirá os dados dos jogadores
 
+    /**
+     * Construtor que inicializa a tabela e os painéis de GIF.
+     */
     public PlayerTable() {
         tablePanel = new JPanel(new BorderLayout());
 
-        gifPanel = new JPanel(new GridBagLayout());
+        gifPanel = new JPanel(new GridBagLayout()); // Configura o layout para o painel de GIFs
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.gridx = 0;
+        // Adiciona cada GIF ao painel com o ícone redimensionado
         gifPanel.add(new JLabel(resizeGif(new ImageIcon(Objects.requireNonNull(getClass().getResource("./resources/gif1.gif"))))), gbc);
         gbc.gridx = 1;
         gifPanel.add(new JLabel(resizeGif(new ImageIcon(Objects.requireNonNull(getClass().getResource("./resources/gif2.gif"))))), gbc);
@@ -34,7 +38,7 @@ public class PlayerTable {
 
     /**
      * Redimensiona uma imagem GIF para as dimensões desejadas.
-     * 
+     *
      * @param icon O ImageIcon contendo a imagem GIF a ser redimensionada.
      * @return Um novo ImageIcon com a imagem GIF redimensionada.
      */
@@ -45,8 +49,8 @@ public class PlayerTable {
 
     /**
      * Retorna o painel que contém a tabela de jogadores.
-     * 
-     * @return o painel que contém a tabela de jogadores
+     *
+     * @return O painel que contém a tabela de jogadores.
      */
     public static JPanel getTablePanel() {
         return tablePanel;

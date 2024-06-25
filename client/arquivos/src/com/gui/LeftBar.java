@@ -23,32 +23,35 @@ public class LeftBar extends JPanel {
     private static JTextField nationalityField;
     private static JTextField clubNameField;
 
+    /**
+     * Construtor que inicializa os componentes da barra lateral esquerda.
+     */
     public LeftBar() {
-        setLayout(new FlowLayout(FlowLayout.LEFT, 0, 20));
-        Border rightLine = BorderFactory.createMatteBorder(0, 0, 0, 1, Color.BLACK);
-        Border padding = new EmptyBorder(10, 20, 20, 20);
-        setBorder(new CompoundBorder(rightLine, padding));
-        setPreferredSize(new Dimension(300, Integer.MAX_VALUE));
+        setLayout(new FlowLayout(FlowLayout.LEFT, 0, 20)); // Define o layout do painel
+        Border rightLine = BorderFactory.createMatteBorder(0, 0, 0, 1, Color.BLACK); // Cria uma borda à direita
+        Border padding = new EmptyBorder(10, 20, 20, 20); // Adiciona padding interno
+        setBorder(new CompoundBorder(rightLine, padding)); // Combina as bordas para aplicar ao painel
+        setPreferredSize(new Dimension(300, Integer.MAX_VALUE)); // Define a largura preferencial do painel lateral
 
-        // aviso de qual arquivo foi carregado
+        // Seção de aviso de arquivo carregado
         JPanel loadFile = new JPanel();
         loadFile.setLayout(new BoxLayout(loadFile, BoxLayout.Y_AXIS));
         JLabel loadFileLabel = new JLabel("Arquivo carregado:");
 
-        fileStatusLabel = new JLabel("Nenhum arquivo foi carregado");
-        Font font = new Font("Arial", Font.PLAIN, 12);
-        fileStatusLabel.setFont(font);
+        fileStatusLabel = new JLabel("Nenhum arquivo foi carregado"); // Inicializa o label de status do arquivo
+        Font font = new Font("Arial", Font.PLAIN, 12); // Define a fonte para o label
+        fileStatusLabel.setFont(font); // Aplica a fonte ao label de status
 
-        loadFile.add(loadFileLabel);
-        loadFile.add(fileStatusLabel);
+        loadFile.add(loadFileLabel);  // Adiciona o label de título ao painel de aviso
+        loadFile.add(fileStatusLabel); // Adiciona o label de status ao painel de aviso
 
-        // botao de listar todos jogadores
+        // Botão para listar todos os jogadores
         JPanel listAllPlayers = new JPanel();
         listAllPlayers.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
         loadAllButton = new JButton("Listar todos jogadores");
         listAllPlayers.add(loadAllButton);
 
-        // campos para filtrar
+        // Painel para campos de filtro
         JPanel filterFields = new JPanel(new GridBagLayout());
         filterFields.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Color.BLACK));
         filterFields.add(Box.createHorizontalStrut(200));
@@ -58,7 +61,7 @@ public class LeftBar extends JPanel {
         gbc.gridx = 0;
         gbc.gridy = 0;
 
-
+        // Adiciona campos de entrada para ID, idade, nome do jogador, nacionalidade e nome do clube
         GUIUtils.FieldPanel idFieldPanel = GUIUtils.inputField("ID:", 250, 10, true, 'y');
         idField = idFieldPanel.textField;
         filterFields.add(idFieldPanel.panel, gbc);
@@ -83,7 +86,7 @@ public class LeftBar extends JPanel {
         clubNameField = clubNameFieldPanel.textField;
         filterFields.add(clubNameFieldPanel.panel, gbc);
 
-        // botões para pesquisar
+        // Painel para os botões de pesquisa
         JPanel filterButtons = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
         searchButton = new JButton("Pesquisar");
         cleanButton = new JButton("Limpar campos");
@@ -91,18 +94,23 @@ public class LeftBar extends JPanel {
         filterButtons.add(Box.createHorizontalStrut(10));
         filterButtons.add(cleanButton);
 
+        // Adiciona todos os componentes ao painel principal
         add(loadFile);
         add(listAllPlayers);
         add(filterFields);
         add(filterButtons);
 
+        // Adiciona ação ao botão de listar todos os jogadores
         loadAllButton.addActionListener(e -> MainFrame.getAllPlayers(fileStatusLabel.getText()));
 
+        // Configura ouvintes para os campos de entrada
         setupFieldListeners();
 
+        // Adiciona ações aos botões de pesquisa e limpeza
         searchButton.addActionListener(e -> MainFrame.selectPlayers());
         cleanButton.addActionListener(e -> clearFields());
 
+        // Inicialmente desabilita os componentes até que um arquivo seja carregado
         setComponentsEnabled(false);
     }
 

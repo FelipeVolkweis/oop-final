@@ -4,6 +4,7 @@ import javax.swing.*;
 
 /**
  * A classe ResponseHandler é responsável por lidar com as respostas recebidas do servidor.
+ * Ela analisa as respostas e fornece feedback visual baseado nos códigos de status e mensagens recebidas.
  */
 public class ResponseHandler {
     /**
@@ -28,23 +29,23 @@ public class ResponseHandler {
     public static int extractStatus(String response) {
         try {
             int statusIndex = response.indexOf("\"status\":");
-            if (statusIndex == -1) {
+            if (statusIndex == -1) { // Retorna -1 se não encontrar a chave "status"
                 return -1;
             }
 
-            int startIndex = statusIndex + 9;
-            int endIndex = response.indexOf(",", startIndex);
-            if (endIndex == -1) {
+            int startIndex = statusIndex + 9; // Ajusta o índice para o começo do valor após "status":
+            int endIndex = response.indexOf(",", startIndex); // Procura a próxima vírgula para delimitar o fim do valor do status
+            if (endIndex == -1) { // Se não houver uma vírgula, procura por uma chave de fechamento
                 endIndex = response.indexOf("}", startIndex);
             }
 
-            if (endIndex == -1) {
+            if (endIndex == -1) { // Retorna -1 se não encontrar um delimitador válido
                 return -1;
             }
 
-            String statusString = response.substring(startIndex, endIndex).trim();
-            return Integer.parseInt(statusString);
-        } catch (Exception e) {
+            String statusString = response.substring(startIndex, endIndex).trim(); // Extrai a string do status
+            return Integer.parseInt(statusString); // Converte a string do status para inteiro
+        } catch (Exception e) {  // Retorna -1 em caso de exceção durante a extração
             return -1;
         }
     }
@@ -81,13 +82,13 @@ public class ResponseHandler {
      */
     public static String extractMessage(String response) {
         try {
-            int payloadIndex = response.indexOf("\"payload\":");
+            int payloadIndex = response.indexOf("\"payload\":"); // Procura a chave "payload" na resposta
             if (payloadIndex == -1) {
-                return "Detalhe do erro não disponível.";
+                return "Detalhe do erro não disponível."; // Retorna uma mensagem padrão se "payload" não for encontrada
             }
 
-            int startQuote = response.indexOf('"', payloadIndex + 10) + 1;
-            int endQuote = response.indexOf('"', startQuote);
+            int startQuote = response.indexOf('"', payloadIndex + 10) + 1; // Localiza o início da mensagem dentro de "payload"
+            int endQuote = response.indexOf('"', startQuote); // Localiza o fim da mensagem
             return response.substring(startQuote, endQuote);
         } catch (Exception e) {
             return "Erro ao extrair a mensagem.";

@@ -16,15 +16,21 @@ public class PlayerEditDialog extends JDialog {
     private static JTextField nationalityField;
     private static JTextField clubNameField;
     private JButton saveButton;
-    private final Player originalPlayer;
+    private final Player originalPlayer; // Referência ao jogador original antes das edições
 
+    /**
+     * Construtor que configura o diálogo de edição.
+     *
+     * @param parent A janela principal que será o proprietário deste diálogo.
+     * @param player O jogador que será editado.
+     */
     public PlayerEditDialog(JFrame parent, Player player) {
-        super(parent, "Editar Jogador", true);
-        this.originalPlayer = player;
-        setupUI(player);
-        pack();
-        setLocationRelativeTo(parent);
-        getRootPane().setBorder(new EmptyBorder(0, 10, 10, 10));
+        super(parent, "Editar Jogador", true); // Define o título e o modality
+        this.originalPlayer = player; // Armazena o jogador original
+        setupUI(player); // Configura a interface gráfica
+        pack(); // Compacta o layout do diálogo
+        setLocationRelativeTo(parent); // Posiciona o diálogo relativo à janela principal
+        getRootPane().setBorder(new EmptyBorder(0, 10, 10, 10)); // Define uma borda para o conteúdo do diálogo
     }
 
     /**
@@ -35,13 +41,14 @@ public class PlayerEditDialog extends JDialog {
     private void setupUI(Player player) {
         JPanel filterFields = new JPanel(new GridBagLayout());
         setPreferredSize(new Dimension(450, 450));
-        filterFields.setBorder(new EmptyBorder(10, 10, 10, 10));
+        filterFields.setBorder(new EmptyBorder(10, 10, 10, 10)); // Aplica uma borda interna para espaçamento
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.insets = new Insets(5, 0, 5, 0);
+        gbc.fill = GridBagConstraints.HORIZONTAL; // Os componentes ocuparão todo o espaço horizontal
+        gbc.insets = new Insets(5, 0, 5, 0); // Define o espaçamento entre os componentes
         gbc.gridx = 0;
         gbc.gridy = 0;
 
+        // Cria e configura campo não editável para o ID do jogador
         JLabel idLabel = new JLabel("Id:");
         filterFields.add(idLabel, gbc);
         gbc.gridy++;
@@ -50,6 +57,7 @@ public class PlayerEditDialog extends JDialog {
         idField.setEditable(false);
         filterFields.add(idField, gbc);
 
+        // Adiciona campo editável para a idade do jogador
         gbc.gridy++;
         String ageValidate = (player.getAge() <= 0) ? "" : String.valueOf(player.getAge());
         GUIUtils.FieldPanel ageFieldPanel = GUIUtils.inputField("Idade:", 200, 10, true, 'y', ageValidate);
@@ -57,24 +65,28 @@ public class PlayerEditDialog extends JDialog {
         addDocumentListener(ageField);
         filterFields.add(ageFieldPanel.panel, gbc);
 
+        // Adiciona campo editável para o nome do jogador
         gbc.gridy++;
         GUIUtils.FieldPanel playerNameFieldPanel = GUIUtils.inputField("Nome do Jogador:", 200, 40, false, 'y', player.getPlayerName());
         playerNameField = playerNameFieldPanel.textField;
         addDocumentListener(playerNameField);
         filterFields.add(playerNameFieldPanel.panel, gbc);
 
+        // Adiciona campo editável para a nacionalidade do jogador
         gbc.gridy++;
         GUIUtils.FieldPanel nationalityFieldPanel = GUIUtils.inputField("Nacionalidade:", 200, 40, false, 'y', player.getNationality());
         nationalityField = nationalityFieldPanel.textField;
         addDocumentListener(nationalityField);
         filterFields.add(nationalityFieldPanel.panel, gbc);
 
+        // Adiciona campo editável para o nome do clube do jogador
         gbc.gridy++;
         GUIUtils.FieldPanel clubNameFieldPanel = GUIUtils.inputField("Nome do Clube:", 200, 40, false, 'y', player.getClubName());
         clubNameField = clubNameFieldPanel.textField;
         addDocumentListener(clubNameField);
         filterFields.add(clubNameFieldPanel.panel, gbc);
 
+        // Adiciona botão de salvar e configura a ação ao ser clicado
         gbc.gridy++;
         saveButton = new JButton("Salvar");
         saveButton.setEnabled(false);
